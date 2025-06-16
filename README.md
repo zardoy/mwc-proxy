@@ -6,7 +6,12 @@ This repository contains only the **WebSocket proxy** for making Minecraft serve
 
 ## Bun WebSocket Proxy
 
-This script allows your Minecraft server to accept WebSocket connections, making it browser-friendly for web-based Minecraft clients. It acts as a bridge between a web client and your Minecraft server by forwarding WebSocket messages to a TCP connection and vice versa without any modifications.
+This script allows your Minecraft server to accept WebSocket connections, making it browser-friendly for web-based Minecraft clients.
+In other words, it will allow to connect to your server by typing something like this this into connect IP field:
+```sh
+wss://ws.your-domain.com
+```
+It acts as a bridge between a web client and your Minecraft server by forwarding WebSocket messages to a TCP connection and vice versa without any modifications.
 
 ### Installation & Usage
 
