@@ -1,11 +1,39 @@
 {
     "name": "mwc-proxy",
     "version": "0.0.0",
-    "private": true,
     "license": "MIT",
-    "scripts": {},
+    "main": "dist/index.js",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "bin": {
+        "minecraft-web-proxy": "dist/app.js",
+        "mwp": "dist/app.js"
+    },
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "pnpm run build"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.2.16",
+        "@types/node": "^20",
+        "typescript": "^5.8.2"
+    },
     "dependencies": {
-        "@types/bun": "^1.2.16"
+        "compression": "^1.7.4",
+        "debug": "^4.3.4",
+        "express": "^5.2.1",
+        "express-prom-bundle": "^8.0.0",
+        "express-ws": "^5.0.2",
+        "prismarine-auth": "^2.4.0",
+        "prom-client": "^15.1.0",
+        "public-ip": "^8.0.0",
+        "socks": "^2.8.0",
+        "yggdrasil": "^1.6.0"
     },
     "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
 }
