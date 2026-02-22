@@ -1,3 +1,7 @@
+<div align="left">
+  <img src="logo.png" width="200" alt="mwc-proxy" />
+</div>
+
 # Minecraft Web Client Proxies
 
 This repository contains the **WebSocket proxy** for making Minecraft servers accessible to web clients.

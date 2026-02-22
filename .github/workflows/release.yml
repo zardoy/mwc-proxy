@@ -109,6 +109,7 @@ jobs:
 
       - name: Generate artifact attestation
         if: steps.version.outputs.skip != 'true' && steps.exists.outputs.push == 'true' && success()
+        continue-on-error: true
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
