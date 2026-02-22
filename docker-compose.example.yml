@@ -1,0 +1,43 @@
+# Recommended way to run mwc-proxy. Copy to docker-compose.yml and adjust.
+# Create env.js (optional) for config overrides: set global.MWC_PROXY_CONFIG_OVERRIDES or use CONFIG_OVERRIDES_JSON env.
+
+services:
+  mwc-proxy:
+    image: ghcr.io/zardoy/mwc-proxy:latest
+    init: true
+    read_only: true
+    restart: unless-stopped
+    container_name: mwc-proxy
+
+    ports:
+      - 2344:2344/tcp
+      # If you use a reverse proxy (e.g. nginx), bind to localhost only:
+      # - 127.0.0.1:2344:2344/tcp
+
+    environment:
+      PORT: "2344"
+      # Signal server (enabled by default)
+      # SIGNAL_DOMAIN: "proxy.your-domain.com" (your proxy domain reported to central list on network.mcraft.fun)
+      # DISABLE_SIGNAL: "0"
+      # CONFIG_OVERRIDES_JSON: '{"metricsEndpoint":false}'
+
+    volumes:
+      # Preserve access log (rotated at 100MB by default)
+      - ./logs:/usr/src/app/dist/logs
+    # Uncomment to mount env.js for config overrides (set global.MWC_PROXY_CONFIG_OVERRIDES).
+    # Create the file first, e.g.: echo "module.exports = {}" > env.js
+    #   - ./env.js:/usr/src/app/dist/env.js
+    # Optional: custom entrypoint (e.g. apply tc rate limit then start proxy). Your script should end with: exec node dist/app.js
+    #   - ./entrypoint.sh:/entrypoint.sh
+    # entrypoint: ["/bin/sh", "/entrypoint.sh"]
+
+    labels:
+      - com.centurylinklabs.watchtower.scope=mwc-proxy
+
+  # watchtower is used to keep the image updated (optional). Disable to avoid unexpected disconnections.
+  watchtower:
+    image: ghcr.io/containrrr/watchtower
+    restart: unless-stopped
+    command: --cleanup --scope mwc-proxy --interval 900 --include-restarting
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
