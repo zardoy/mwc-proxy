@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Install pnpm fox pnpx
+        run: npm i -g pnpm
+
       - name: Publish to NPM and create GitHub release
         run: pnpx zardoy-release npm
         env:
