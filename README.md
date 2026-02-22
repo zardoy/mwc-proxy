@@ -1,4 +1,4 @@
-<div align="left">
+<div align="center">
   <img src="logo.png" width="200" alt="mwc-proxy" />
 </div>
 
@@ -6,9 +6,7 @@
 
 This repository contains the **WebSocket proxy** for making Minecraft servers accessible to web clients.
 
----
-
-## MWC proxy (this repo)
+## MWC proxy
 
 - **WebSocket-based Minecraft proxy** — browser clients connect via WebSocket; the proxy forwards to Java Minecraft servers (TCP).
 - **Microsoft/Mojang authentication** — makes it possible to connect to official Minecraft servers!
@@ -18,6 +16,21 @@ This repository contains the **WebSocket proxy** for making Minecraft servers ac
 - **Prometheus metrics** — built-in metrics and optional `express-prom-bundle` middleware.
 - **Callback interface for extensions** — e.g. custom connection routing, connection limits, banned origins.
 
+[Deploy with a single line of command RIGHT NOW](https://github.com/zardoy/minecraft-everywhere)
+
+## Docker Compose Deploy
+
+The recommended way to run an instance is with **Docker Compose**, using the example that includes automatic updates via Watchtower and an optional **env.js** mount for config overrides:
+
+**[docker-compose.example.yml](docker-compose.example.yml)**
+
+Copy it to `docker-compose.yml`, create `env.js` if you want external config (see [config overrides](#config-overrides)), then:
+
+```sh
+docker compose up -d
+```
+
+Images are published to GitHub Container Registry (`ghcr.io/zardoy/mwc-proxy`). The compose file uses a Watchtower service to keep the image updated. The access log is rotated at 100MB and mounted at `./logs` so it is preserved on the host. You can override the entrypoint (e.g. to apply `tc` egress rate limiting) by mounting your own script and setting `entrypoint: ["/bin/sh", "/entrypoint.sh"]`; your script should end with `exec node dist/app.js`.
 
 ## Using this package as NPM library
 
@@ -49,23 +62,14 @@ Environment variables: `PORT`, `URL_ROOT`, `ALLOW_ORIGIN`, `MAX_CONNECTIONS_PER_
 
 ---
 
-## Docker (auto-updated images)
+## Config overrides
 
-Images are published to GitHub Container Registry and updated on releases.
+You can override the proxy API options (deep-merge) in two ways:
 
-```sh
-docker pull ghcr.io/zardoy/mwc-proxy:latest
-# or a specific version
-docker pull ghcr.io/zardoy/mwc-proxy:0.1.0
-```
+1. **env.js** — Mount or place `env.js` so the CLI loads it, then set `global.MWC_PROXY_CONFIG_OVERRIDES = { ... }` with any [ProxyMiddlewareOptions](src/api.ts) overrides.
+2. **CONFIG_OVERRIDES_JSON** — Set the env var to a JSON string, e.g. `CONFIG_OVERRIDES_JSON='{"metricsEndpoint":false}'`.
 
-Run:
-
-```sh
-docker run -p 2344:2344 -e PORT=2344 ghcr.io/zardoy/mwc-proxy
-```
-
-The container exposes port **2344** by default. Override with `PORT` or pass `--port` to the app.
+Useful for toggling metrics endpoint, auth limits, single-server defaults, etc., without changing code.
 
 ---
 
