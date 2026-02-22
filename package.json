@@ -14,6 +14,11 @@
         "minecraft-web-proxy": "dist/app.js",
         "mwp": "dist/app.js"
     },
+    "release": {
+        "sharedActionsOverride": {
+            "runBuild": false
+        }
+    },
     "scripts": {
         "build": "tsc",
         "prepublishOnly": "bun run build"
