@@ -42,6 +42,9 @@ importers:
       '@types/bun':
         specifier: ^1.2.16
         version: 1.2.16
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
       '@types/node':
         specifier: ^20
         version: 20.19.33
