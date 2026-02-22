@@ -19,6 +19,9 @@
             "runBuild": false
         }
     },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "tsc",
         "prepublishOnly": "bun run build"
