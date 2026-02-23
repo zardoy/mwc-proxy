@@ -264,7 +264,7 @@ export function createProxyMiddleware(options: ProxyMiddlewareOptions = {}, conn
             if (totalCount >= maxConnections) {
                 const errorMessage = options.mwcCallbacks?.getTooManyConnectionsMessage
                     ? options.mwcCallbacks.getTooManyConnectionsMessage(totalCount, maxConnections)
-                    : `Too many connections from the same IP (${totalCount}/${maxConnections}). Please wait for existing connections to close.`
+                    : `Too many connections from the same IP (${totalCount}/${maxConnections}). Please wait a bit or try another proxy server from network.mcraft.fun`
 
                 res.status(429).send({
                     code: 429,

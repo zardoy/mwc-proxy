@@ -1,4 +1,4 @@
-<div align="center">
+<div align="left">
   <img src="logo.png" width="200" alt="mwc-proxy" />
 </div>
 
@@ -13,7 +13,7 @@ This repository contains the **WebSocket proxy** for making Minecraft servers ac
 - **Connection management & rate limiting** — per-IP limits, configurable caps.
 - **SOCKS proxy support** — optional SOCKS5 upstream for outbound connections.
 - **Signal Server integration** — reports to a central server (e.g. signal.mcraft.fun): description, domain, players, CPU, RAM; heartbeat every 10 seconds.
-- **Prometheus metrics** — built-in metrics and optional `express-prom-bundle` middleware.
+- **Prometheus metrics** — built-in metrics and enabled-by-default `express-prom-bundle` middleware.
 - **Callback interface for extensions** — e.g. custom connection routing, connection limits, banned origins.
 
 [Deploy with a single line of command RIGHT NOW](https://github.com/zardoy/minecraft-everywhere)
