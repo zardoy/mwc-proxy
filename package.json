@@ -43,5 +43,8 @@
         "public-ip": "^8.0.0",
         "socks": "^2.8.0",
         "yggdrasil": "^1.6.0"
+    },
+    "patchedDependencies": {
+        "prismarine-auth@2.7.0": "patches/prismarine-auth@2.7.0.patch"
     }
 }

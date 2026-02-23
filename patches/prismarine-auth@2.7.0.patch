@@ -1,0 +1,36 @@
+diff --git a/src/MicrosoftAuthFlow.js b/src/MicrosoftAuthFlow.js
+index ff45c86de298ff5306e0780905573fc3cabd763c..bfb6139486847cfd67fe161f31f955d3107eb1fb 100644
+--- a/src/MicrosoftAuthFlow.js
++++ b/src/MicrosoftAuthFlow.js
+@@ -19,7 +19,8 @@ const MinecraftServicesTokenManager = require('./TokenManagers/MinecraftBedrockS
+ async function retry (methodFn, beforeRetry, times) {
+   while (times--) {
+     if (times !== 0) {
+-      try { return await methodFn() } catch (e) { if (e instanceof URIError) { throw e } else { debug(e) } }
++      // todo just send error instead!
++      try { return await methodFn() } catch (e) { if (e instanceof URIError) { throw e } else { throw e } }
+       await new Promise(resolve => setTimeout(resolve, 2000))
+       await beforeRetry()
+     } else {
+diff --git a/src/TokenManagers/LiveTokenManager.js b/src/TokenManagers/LiveTokenManager.js
+index 062b3c038eb13a7f1dfee310ab8fc1f4767813dc..dd997ef40bca94907505e0930b84b79e19312298 100644
+--- a/src/TokenManagers/LiveTokenManager.js
++++ b/src/TokenManagers/LiveTokenManager.js
+@@ -134,7 +134,7 @@ class LiveTokenManager {
+               if (res.error === 'authorization_pending') {
+                 debug('[live] Still waiting:', res.error_description)
+               } else {
+-                throw Error(`Failed to acquire authorization code from device token (${res.error}) - ${res.error_description}`)
++                throw Error(`Failed to get token (${res.error}) - ${res.error_description}`)
+               }
+             } else {
+               return res
+@@ -145,6 +145,8 @@ class LiveTokenManager {
+         this.polling = false
+         return { accessToken: token.access_token }
+       } catch (e) {
++        this.polling = false
++        throw e
+         console.debug(e)
+       }
+     }

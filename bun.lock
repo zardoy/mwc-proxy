@@ -23,6 +23,9 @@
       },
     },
   },
+  "patchedDependencies": {
+    "prismarine-auth@2.7.0": "patches/prismarine-auth@2.7.0.patch",
+  },
   "packages": {
     "@azure/msal-common": ["@azure/msal-common@14.16.1", "", {}, "sha512-nyxsA6NA4SVKh5YyRpbSXiMr7oQbwark7JU9LMeg6tJYTSPyAGkdx61wPT4gyxZfxlSxMMEyAsWaubBlNyIa1w=="],
 
