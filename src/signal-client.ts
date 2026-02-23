@@ -116,7 +116,8 @@ export class SignalClient {
     }
 
     private start() {
-        console.log(`Signal Server integration enabled, reporting to ${this.options.signalServerUrl}`)
+        const domainOrServerUrl = this.options.domain ?? '<public IP>'
+        console.log(`Signal Server integration enabled, reporting ${domainOrServerUrl} to ${this.options.signalServerUrl}`)
         this.sendAcknowledgment()
         this.intervalId = setInterval(() => {
             this.sendAcknowledgment()
