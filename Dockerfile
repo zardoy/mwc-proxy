@@ -3,10 +3,8 @@
 FROM oven/bun:1 AS builder
 WORKDIR /usr/src/app
 
-COPY package.json bun.lock ./
+COPY . .
 RUN bun install --frozen-lockfile
-COPY tsconfig.json ./
-COPY src ./src
 RUN bun run build
 
 # Release stage: run the proxy
