@@ -55,20 +55,28 @@ export class SignalClient {
     private async runSelfCheckAndStart(): Promise<void> {
         const port = this.options.listenPort!
         const urlRoot = (this.options.urlRoot ?? '').replace(/\/$/, '')
+        const path = `${urlRoot}/connect`
 
         try {
-            const publicIp = await this.getPublicIp()
-            if (!publicIp) {
-                console.warn('Signal: could not get public IP, skipping signal server integration')
-                this.selfCheckDone = true
-                return
+            let selfCheckUrl: string
+            if (this.options.domain) {
+                const base = this.options.domain.replace(/\/$/, '')
+                selfCheckUrl = `https://${base}/${path.replace(/^\//, '')}`
+            } else {
+                const publicIp = await this.getPublicIp()
+                if (!publicIp) {
+                    console.warn('Signal: could not get public IP, skipping signal server integration')
+                    this.selfCheckDone = true
+                    return
+                }
+                selfCheckUrl = `http://${publicIp}:${port}${path}`
             }
 
-            const ok = await this.selfCheckLoop(publicIp, port, urlRoot)
+            const ok = await this.selfCheckLoop(selfCheckUrl)
             this.selfCheckDone = true
             if (!ok) {
                 console.warn(
-                    `Signal: self-check failed (not reachable at ${publicIp}:${port}), skipping signal server integration`,
+                    `Signal: self-check failed (not reachable at ${selfCheckUrl}), skipping signal server integration`,
                 )
                 return
             }
@@ -89,11 +97,10 @@ export class SignalClient {
         }
     }
 
-    private selfCheckLoop(publicIp: string, port: number, urlRoot: string): Promise<boolean> {
+    private selfCheckLoop(url: string): Promise<boolean> {
         return new Promise((resolve) => {
-            const path = `${urlRoot}/connect`
-            const url = `http://${publicIp}:${port}${path}`
-            const req = http.get(url, (res) => {
+            const protocol = url.startsWith('https') ? https : http
+            const req = protocol.get(url, (res) => {
                 if (res.statusCode === 502) {
                     resolve(false)
                     return

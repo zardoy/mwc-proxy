@@ -27,7 +27,7 @@ import type http from 'http'
 import fs from 'fs'
 import express from 'express'
 import compression from 'compression'
-import { createProxyMiddleware } from './index'
+import { createProxyMiddleware, ProxyMiddlewareOptions } from './index'
 
 function deepMerge<T extends object>(target: T, source: Partial<T>): T {
     const out = { ...target }
@@ -116,7 +116,7 @@ const port = process.argv[2] && !process.argv[2].startsWith('-')
       ? process.env.PORT ?? 2344
       : process.argv[portArg + 1]
 
-const baseOptions = {
+const baseOptions: ProxyMiddlewareOptions = {
     allowOrigin: process.env.ALLOW_ORIGIN ?? '*',
     server: httpsServer,
     urlRoot,
